@@ -1,0 +1,10 @@
+\begin{table}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{Singapore full-label controls: 10,000 evaluation trips and 197,301 intervals. Seconds; mean $\pm$ sample SD over three initializations. Bold marks the lowest error within each comparable group.}\label{tab:singapore}
+\begin{tabular}{lrrr}\toprule
+Method & MAE & Prefix50 & Tail MAE\\\midrule
+Ours & $19.518\pm0.057$ & $55.861\pm1.161$ & $\mathbf{93.069\pm1.329}$\\
+Direct prediction & $\mathbf{19.476\pm0.027}$ & $55.528\pm0.523$ & $94.950\pm2.115$\\
+No prefix loss & $19.490\pm0.129$ & $\mathbf{55.407\pm0.394}$ & $97.566\pm4.450$\\
+\bottomrule\end{tabular}
+\end{table}

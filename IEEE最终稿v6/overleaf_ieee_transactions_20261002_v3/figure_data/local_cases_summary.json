@@ -1,0 +1,50 @@
+{
+  "source_hashes": {
+    "ours_predictions": "bb3766f67af2dbf94ba3680df98bda264834a1658b9c00bc24cfca51fa558076",
+    "direct_predictions": "78ae65a5a0ab56c01e0c947b2933f2a3c3a571ce8a66fb9df089e476e02964ac",
+    "budget_rho_confirmation.json": "a526a365147f991abe53dab9a761173e7c5510cfc39f458675f14c4dd9ec7b85",
+    "budget_rho_selection.json": "7d9d905d1adba282a38d1bb1ada82868c4d62473e4741c38a2419362cec96a44",
+    "blend_confirmation.json": "8d936927a1d93b33071e101ab34b12dd46a5303df60f114d17a300fe0780ac71",
+    "blend_selection.json": "3d3d84f2a890911604013722195d17a99acaad0b1f62c9db5cf3d9c195e1b727",
+    "tree_confirmation.json": "34d8be77f61b6c44739b005a75b563801e912f0767f331973c0553276f6a0ca4",
+    "tree_selection.json": "0e6f45c16f9eea1c733bf3455ea0815b697d0ff63eb189dddcf4471c32e9373c",
+    "baseline_recomputed.json": "94cf2c5b140d06a3e05b80ac4bf548e2e6a1a5ac98e7935c07116725e6ef2143",
+    "budget_audit.json": "42bf4fdc364bd6b1b5ffe029a940beb97d42d14f3fffa99560501fbaa3c03832",
+    "budget_gate.json": "578c7320cbbd823f9bb744afe8cea858f8e09434b0d85531e2faede880aede47",
+    "results/thesis_final_protocol_20260926/f0.01_m20260919/nnls_ridge_tuned/result.json": "7ab4419f20a73f798c837893733001b51f9cd0b3b827e896c488a3541cef2cb4",
+    "results/thesis_final_protocol_20260926/f0.01_m20260919/nnls_ridge_tuned/predictions.npz": "38e09dae764b051d0f2b6e7e6e3f6a5a8b3e2665adbec626d94166fb11634350",
+    "results/thesis_final_protocol_20260926/f0.01_m20260920/nnls_ridge_tuned/result.json": "75e8e9f871243c2a72fd36217ece48f08996eced67b8bdc3cf1db96cb363b049",
+    "results/thesis_final_protocol_20260926/f0.01_m20260920/nnls_ridge_tuned/predictions.npz": "96803d79ee732b3579752c674daae47c7437e9e2529c12c8b9164b12f4b4a55e",
+    "results/thesis_final_protocol_20260926/f0.01_m20260921/nnls_ridge_tuned/result.json": "8664e95be2f350b71772c95771b35bfe840d219f50aae54dc8a937710c2d888c",
+    "results/thesis_final_protocol_20260926/f0.01_m20260921/nnls_ridge_tuned/predictions.npz": "42bee61d06b7896996143c40c603ee751a2037221f34331380d396249d89d456",
+    "results/thesis_final_protocol_20260926/f0.1_m20260919/nnls_ridge_tuned/result.json": "2ecd9b33a0d7b5a2adb50d5a99446dfc9fc4e5317179054152dd8dca3dab91ac",
+    "results/thesis_final_protocol_20260926/f0.1_m20260919/nnls_ridge_tuned/predictions.npz": "651b01fa89c57f84d9dc1d329d68cd4c6f3f413fb794e34627b8675b23af5f14",
+    "results/thesis_final_protocol_20260926/f0.1_m20260920/nnls_ridge_tuned/result.json": "c1799867db09340469cd5cd30d13bbeb8315aef694b4a9c2fad7b7f7bcd21bf3",
+    "results/thesis_final_protocol_20260926/f0.1_m20260920/nnls_ridge_tuned/predictions.npz": "d808ce6f911cf2c32b38ee923698b7c589b6850119fe2c3a7650cb96cb18b1bb",
+    "results/thesis_final_protocol_20260926/f0.1_m20260921/nnls_ridge_tuned/result.json": "70fe1a3b608217a2664026969c8c70b0967b73791efb3b0bfeadf0c99097bc2f",
+    "results/thesis_final_protocol_20260926/f0.1_m20260921/nnls_ridge_tuned/predictions.npz": "96262a1e8913b7b2692dfefc853b016d233ea3a198979e381c789cfa5fef06f9"
+  },
+  "selection": "nearest development-trip MAE to the 50th and 90th percentiles",
+  "cases": [
+    {
+      "label": "median",
+      "row": 660,
+      "length": 44,
+      "total_seconds": 3609.0,
+      "ours_trip_mae": 25.996687455610797,
+      "ours_mae": 25.996686935424805,
+      "direct_mae": 26.486295700073242,
+      "max_total_residual": 0.00048828125
+    },
+    {
+      "label": "90th percentile",
+      "row": 1125,
+      "length": 40,
+      "total_seconds": 4797.0,
+      "ours_trip_mae": 43.17796020507812,
+      "ours_mae": 43.17795944213867,
+      "direct_mae": 43.5212516784668,
+      "max_total_residual": 0.0
+    }
+  ]
+}

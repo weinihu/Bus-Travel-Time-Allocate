@@ -1,0 +1,10 @@
+\begin{table}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{1,920步训练检查：一个10\%训练掩码、完整验证标签。各方法学习率不同，本表不用于方法排名。选中步数按重复1/2/3排列；MAE单位为秒。}\label{tab:convergence}
+\begin{tabular}{lrr}\toprule
+方法 & MAE & 选中步数\\\midrule
+Ours & $28.893$ & 1200/1200/1680\\
+直接预测 & $28.620$ & 1440/480/1680\\
+仅身份输入 & $28.946$ & 1440/960/1200\\
+\bottomrule\end{tabular}
+\end{table}

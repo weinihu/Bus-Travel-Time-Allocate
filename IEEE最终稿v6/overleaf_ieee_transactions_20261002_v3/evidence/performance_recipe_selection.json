@@ -1,0 +1,36 @@
+{
+  "recipe": "cosine_001_960",
+  "selection_mae_mean": 27.920177459716797,
+  "selection_mae_by_head": [
+    27.85671615600586,
+    27.983638763427734
+  ],
+  "selection_rule": "lowest mean visible selection MAE across paired heads; recipe name breaks ties",
+  "screen_summary_sha256": "eea730c35adacb8b0cb52a3d35d92a70d2741a26601085d56f5b566675f95207",
+  "screen_result_hashes": {
+    "results/paper_performance_20261002/screen/cosine_001_960/f0.1_m20260919/ours/s42/result.json": "28ff2a11a9f0bd17733a13c90733e36c3c41e45a5168266d674b061af6d772ac",
+    "results/paper_performance_20261002/screen/cosine_001_960/f0.1_m20260919/direct_time/s42/result.json": "7efdb08582b0dee1d7798e9b2a74a483bd55b4f3963dabd4898933fcfe615e16",
+    "results/paper_performance_20261002/screen/cosine_003_960/f0.1_m20260919/ours/s42/result.json": "beee408b24439d40c36024f7913699ff77d4485cb014e45744fc187ff2bf53d9",
+    "results/paper_performance_20261002/screen/cosine_003_960/f0.1_m20260919/direct_time/s42/result.json": "1d93f0ed9857d299ed2b0f24870b67cdd0f40654eb78e3e407ddb5b4ac62dd2f",
+    "results/paper_performance_20261002/screen/fixed_003_240/f0.1_m20260919/ours/s42/result.json": "2b6220149d830f1a13ac4558b753615d8539692c0cff8850cd0b51c3bcf88fce",
+    "results/paper_performance_20261002/screen/fixed_003_240/f0.1_m20260919/direct_time/s42/result.json": "b7fc131f95493c21fc3c3a6f987a572b96495f8ac228f96aa63337baa2aeee05",
+    "results/paper_performance_20261002/screen/fixed_001_960/f0.1_m20260919/ours/s42/result.json": "c125eaafa12b18c894ac207d7c4aa417a9d169e3cee1c3cd0fe3150b7479d1f3",
+    "results/paper_performance_20261002/screen/fixed_001_960/f0.1_m20260919/direct_time/s42/result.json": "840c5b740a5f7de64eb0cfec1b91a9aaa0d63dcc67614caeb808f80b6844f70a"
+  },
+  "source_hashes": {
+    "scripts/run_paper_performance_20261002.py": "bb8d7d48999bc73df171f093131ae411d617307877e91e4f5ed7915fe6c4b41c",
+    "scripts/run_submission_revision_20261001.py": "8d310a1fb3072da444c2935f642bd399b0e641adcac1b06880fe63ab4c07a59c",
+    "scripts/run_thesis_evidence_20260920.py": "39c767da312562894ee2c4d3ff33802719bb8215b56d0c7d9c1a681e16bcf63d",
+    "scripts/run_thesis_final_protocol_20260926.py": "ba310d8340ec0273892a36f7d7f0a7f77d7ff561b97bb6965b6bbb55e0c9e365",
+    "scripts/run_public_completion_20260919.py": "49b6651e0c2bceadfd8dd3c1aae84c21120147103e2ddb8d58ef4d21a9546e77",
+    "gptst_flowmixer/segment_time_allocation_model.py": "c110cb4bc586666e8a17aa13c233f5a67882f5a92ff91493bf49bf2a06d7533e",
+    "gptst_flowmixer/shared_base_od_deviation.py": "efd6695110afdd282d8ef56a5c603500e4dd3b8d7ac67a540dc435bcc5d825bd",
+    "gptst_flowmixer/known_total_projection.py": "61fbf36fe67fa7e71f52b8c1c0d73276b73fb602b5ed66c99d76eb43b6d1c15b",
+    "gptst_flowmixer/constraints/projection.py": "a782cb3acb14a5e96dd940825b83ad81865b784f5992da05db84212c371a8dea",
+    "gptst_flowmixer/constraints/__init__.py": "03d2908afbf6e01dc27e3b2984e0471f0578dc9a76c2e300b529c97a351c0d2c",
+    "gptst_flowmixer/adapter_input_contract.py": "8bdaf459ce9320706ee41e79670fcc30363f45c4f1e0f1b7eb231e27e5eecd5d",
+    "scripts/run_singapore_four_challenge_development_20260819.py": "6bb090ba87a0474adb3de6d373b8c974271c3f7f49c6a67e42fb32a5a9147a83",
+    "scripts/build_ieee_revision_evidence_20260930.py": "a5fa81b146334f0136a5bc33ddedcc35a197201e4a848a5b79a7389b51a01cc7"
+  },
+  "frozen_before_development": true
+}

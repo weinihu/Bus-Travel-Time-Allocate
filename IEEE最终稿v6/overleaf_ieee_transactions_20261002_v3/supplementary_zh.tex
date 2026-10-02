@@ -1,0 +1,65 @@
+\RequirePackage[T1]{fontenc}
+\documentclass[journal]{IEEEtran}
+\usepackage[UTF8,scheme=plain,fontset=none]{ctex}
+\setmainfont{texgyretermes-regular.otf}[BoldFont=texgyretermes-bold.otf,
+ ItalicFont=texgyretermes-italic.otf,BoldItalicFont=texgyretermes-bolditalic.otf]
+\setCJKmainfont{FandolSong-Regular.otf}[BoldFont=FandolSong-Bold.otf,
+ ItalicFont=FandolKai-Regular.otf,SmallCapsFont=FandolSong-Regular.otf,Script=Default]
+\setCJKsansfont{FandolHei-Regular.otf}[BoldFont=FandolHei-Bold.otf,Script=Default]
+\setCJKmonofont{FandolFang-Regular.otf}[Script=Default]
+\usepackage{amsmath,amssymb,booktabs,cite,xurl,graphicx}
+\usepackage[hidelinks]{hyperref}
+\begin{document}
+\title{补充材料：分段运行时间估计的实验细节}
+\author{}
+\maketitle
+\section{实验设置}
+主实验限制训练和检查点选择标签。本材料补充报告区间覆盖、完整标签前缀目标、训练预算及总时长敏感性的开发分析。
+
+\section{匹配优化配置检查}
+\input{tables/zh/performance_confirmation}
+另一组匹配对比采用由可见验证标签选择的优化配置（余弦退火、初始学习率0.001、训练960步），每个预算进行九组配对运行。它使用与主文相同的Astana开发行程，但对应另一组已拟合模型；这不是独立数据集复现，也不替代主文按预算选参的比较。1\%、5\%、10\%下，Ours减直接预测的MAE差分别为$+0.005$、$+0.133$和$+0.148$秒。5,000次行程聚类百分位Bootstrap以已拟合模型和标签布局为条件，仅反映开发行程抽样不确定性，不包含重新训练的不确定性。1\%区间包含零，5\%和10\%区间为正。该条件区间不能证明跨开发划分的泛化能力。
+
+\section{布局控制的逐次结果}
+\input{tables/zh/coverage_seeds}
+两种布局均开放23,720个训练标签，覆盖相同115个区间，逐区间计数完全一致；验证开放2,656个标签。训练均为240步、学习率0.003，配对初始化和批次顺序相同。表\ref{tab:coverage_seeds}报告三次重复的误差。匹配随机布局中，本文方法的最优验证点均为最后一步，结果因此与这一训练预算相关。
+
+计数匹配控制了每个区间的标签数量，尚未配平标签所在的行程、时段和上下文。因此，它帮助排查位置与区间覆盖共同变化的影响，但不确定二者各自的因果贡献。
+
+\section{Singapore前缀目标验证}
+\input{tables/zh/prefix_fixed}
+\input{tables/zh/prefix_seeds}
+比较使用50,000趟训练、5,000趟检查点选择和10,000趟开发行程，局部标签完整，无额外历史输入。训练240步，每24步选择一次；网络、初始化、批次和时长权重相同，分别改变归一化分母、前缀系数或预测方式。计入填充位置时，分母包含有效行程结束后的零累计误差，会稀释前缀目标；有效位置归一化只统计真实区间。
+
+表\ref{tab:prefix_fixed}报告均值与样本标准差，表\ref{tab:prefix_seeds}报告逐次结果。有效位置归一化降低总体MAE，但长段MAE由93.069升至96.582秒；无前缀版本为97.566秒。与无前缀相比，三次总体MAE分别减少0.026、0.056和0.055秒。前缀归一化对不同误差指标的作用并不一致。
+
+\section{Singapore common-visible对比}\label{sec:singapore-common-visible}
+该Singapore已知总时长对比包含14,933个OD和295,318个区间，与前缀目标实验及Astana实验不同。common-visible方法使用相同给定OD总时长，不使用同段历史标签；strict-past参考方法使用严格早于当前行程的标签，因信息条件不同而单独列示。本文方法采用与主文相同的有界重新分配结构，使用15项输入特征、完整局部标签、时长加权Huber和前缀目标。主文对比表使用包含填充位置的前缀分母；有效位置版本另在前缀实验中报告。网络宽度64、两层Transformer、四个注意力头，批次2,048，训练240步，学习率0.003，前缀系数0.35。本文分配器和学习型适配方法报告三个随机种子的均值与总体标准差；确定性基线为单次结果。MixTTE、DutyTTE和TriDGNet\cite{jiang2026mixtte,mao2025dutytte,zuo2026tridgnet}是同任务适配而非原论文完整复现，参数量和训练预算未配平。给定总时长由标签构造，且可能不同于局部区间标签之和，因此误差表示给定总量下的分配结果，不代表恢复独立测得的总时间。该评估组仅作描述性比较，不构成独立测试。
+
+\section{训练预算检查}
+\input{tables/zh/probeta_extended}
+ProbETA适配模型采用作者实现\cite{xu2025probeta}，以每步256个可见单区间抽样的高斯似然训练，学习率0.003，使用Adam、10\%训练标签和完整26,561个检查点选择标签，每240步选择一次。它与主文的行程批次、有限检查点选择标签及Huber目标不同，故单独报告。
+
+训练预算从960扩到3,840步，并保持初始化和前960步抽样相同，评估MAE由36.403降至32.876秒。最优验证点分别为3,600、3,840和3,360步（表\ref{tab:probeta_extended}）。其中一次位于最后一步，说明较短预算限制了适配模型的表现，且延长后的优化充分性仍需检验。
+
+\input{tables/zh/convergence}
+表\ref{tab:convergence}的1,920步检查采用每步256个可见单标签抽样和完整验证标签；本文方法及仅身份输入版本学习率为0.001，直接预测为0.003。最优点均早于最后一步，之后验证误差回升。由于抽样方式、验证标签和学习率不同，该结果用于分析训练过程，不与主表合并排序。
+
+\section{完整验证标签与总时长敏感性}
+\input{tables/zh/layout}
+\input{tables/zh/mechanism}
+表\ref{tab:layout}和\ref{tab:mechanism}使用完整26,561个验证标签，分别考察标签布局和日历修正分支。前缀布局减少区间覆盖，移动连续遮挡保留更多区间；主文进一步固定逐区间计数。完整验证与有限验证的标签成本不同，结果分别解释。
+
+\input{tables/zh/stress}
+总时长敏感性分析保持十八个10\%模型的参数不变，将输入改为$T'=(1+\epsilon)T$，在七档偏差下进行126次评价。负5\%偏差时，本文方法MAE为28.199秒，低于精确总时长时的误差，但输出不再符合真实总时长。三角不等式给出$\sum_i|\hat t'_i-t_i|\geq|\epsilon|T$，相同相对偏差下WAPE至少为$|\epsilon|$。该实验检验统一尺度偏差，未模拟随机测量误差。
+
+\section{额外历史与效率}
+\input{tables/zh/history}
+\input{tables/zh/efficiency}
+历史扩展从训练分区选取最多20,000趟查询前已完成、区间匹配的行程。这些记录可以位于50,000趟优化样本之外，因而提供额外标签。表\ref{tab:history}固定历史输入，比较缩放前同段对数时长目标的系数0和0.15；该实验采用计入填充位置的前缀归一化，结果与无历史辅助实验分别报告。
+
+计时环境为RTX 4090 D、PyTorch 2.5.1+cu121，固定保存的10\%主模型及256趟输入批次。float32前向、10次预热、30次同步测量；中位数与四分位范围见表\ref{tab:efficiency}。计时不含数据读取、传输和训练。
+
+\bibliographystyle{IEEEtran}
+\bibliography{references,additional_references}
+\end{document}

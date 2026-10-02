@@ -1,0 +1,11 @@
+\begin{table*}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{Singapore前缀归一化验证：完整训练与验证标签、三次初始化、无额外历史输入；误差单位为秒。 粗体表示各可比组内的最低误差。}\label{tab:prefix_fixed}
+\begin{tabular}{lrrr}\toprule
+方法 & MAE & Prefix50 & 长段MAE\\\midrule
+Ours：分母包含填充 & $19.518\pm0.057$ & $55.86$ & $\mathbf{93.07}$\\
+Ours：分母仅计有效位置 & $\mathbf{19.445\pm0.115}$ & $\mathbf{55.09}$ & $96.58$\\
+Ours：无前缀损失 & $19.490\pm0.129$ & $55.41$ & $97.57$\\
+直接预测：分母仅计有效位置 & $19.545\pm0.096$ & $55.56$ & $96.81$\\
+\bottomrule\end{tabular}
+\end{table*}

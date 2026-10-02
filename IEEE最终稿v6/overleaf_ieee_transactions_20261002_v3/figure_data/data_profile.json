@@ -1,0 +1,51 @@
+{
+  "comparison_panels": [
+    "MAE",
+    "RMSE",
+    "WAPE",
+    "Prefix50",
+    "Top-10% MAE",
+    "long-interval MAE"
+  ],
+  "ablation_panels": [
+    "calendar/correction MAE",
+    "parameterization MAE/RMSE/Prefix50",
+    "Singapore prefix-loss MAE and long-interval MAE"
+  ],
+  "budget_observation_counts": {
+    "1": {
+      "identity_mean": 3,
+      "nnls_ridge_tuned": 3,
+      "direct_time": 9,
+      "ours": 9,
+      "uniform": 1
+    },
+    "5": {
+      "identity_mean": 3,
+      "nnls_ridge_tuned": 3,
+      "direct_time": 9,
+      "ours": 9,
+      "uniform": 1
+    },
+    "10": {
+      "identity_mean": 3,
+      "nnls_ridge_tuned": 3,
+      "direct_time": 9,
+      "ours": 9,
+      "uniform": 1
+    }
+  },
+  "uniform_is_one_budget_invariant_evaluation": true,
+  "ablation_observation_count": 84,
+  "size_inches": {
+    "comparison": [
+      3.5,
+      4.4
+    ],
+    "ablation": [
+      3.5,
+      3.9
+    ]
+  },
+  "design": "Two separate 3-by-2 grouped-bar figures; mean and sample SD bars overlay all repeated outcomes."
+}

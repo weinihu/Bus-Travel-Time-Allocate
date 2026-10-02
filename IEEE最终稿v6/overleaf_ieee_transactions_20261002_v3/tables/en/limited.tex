@@ -1,0 +1,30 @@
+\begin{table*}[t]
+\centering\scriptsize\setlength{\tabcolsep}{2.5pt}
+\caption{Astana development-set errors on 2,182 trips and 87,715 intervals. Values are mean $\pm$ sample SD except the deterministic uniform reference. Neural methods and the fixed-weight combination use nine runs; identity and NNLS use three label layouts; ExtraTrees uses three layouts.}\label{tab:limited}
+\begin{tabular}{llrrrrrr}\toprule
+Budget & Method & MAE & RMSE & WAPE (\%) & Prefix50 & Top-10\% MAE & Long MAE\\\midrule
+1\% & Uniform & $54.28$ & $87.17$ & $58.54$ & $276.78$ & $182.45$ & $338.02$\\
+1\% & Identity means & $\mathbf{31.50\pm0.56}$ & $59.24\pm0.88$ & $\mathbf{33.96\pm0.61}$ & $159.41\pm4.72$ & $92.90\pm1.13$ & $172.37\pm6.11$\\
+1\% & NNLS-Ridge & $32.15\pm0.58$ & $60.95\pm0.78$ & $34.67\pm0.63$ & $167.09\pm6.76$ & $93.62\pm0.93$ & $\mathbf{172.18\pm6.20}$\\
+1\% & ExtraTrees & $32.47\pm0.12$ & $61.95\pm0.58$ & $35.01\pm0.13$ & $161.53\pm3.92$ & $98.80\pm0.93$ & $184.85\pm3.94$\\
+1\% & Direct prediction & $33.19\pm0.60$ & $60.34\pm0.86$ & $35.79\pm0.65$ & $157.99\pm4.73$ & $95.17\pm2.30$ & $177.43\pm5.68$\\
+1\% & Ours & $32.61\pm0.28$ & $60.68\pm0.62$ & $35.16\pm0.30$ & $156.04\pm4.48$ & $95.69\pm2.65$ & $183.25\pm7.16$\\
+1\% & Ours + Direct ($\alpha=0.5$) & $31.79\pm0.26$ & $\mathbf{58.80\pm0.50}$ & $34.27\pm0.28$ & $\mathbf{151.72\pm5.06}$ & $\mathbf{92.83\pm2.23}$ & $177.33\pm6.24$\\
+\midrule
+5\% & Uniform & $54.28$ & $87.17$ & $58.54$ & $276.78$ & $182.45$ & $338.02$\\
+5\% & Identity means & $29.99\pm0.06$ & $56.97\pm0.10$ & $32.34\pm0.06$ & $156.07\pm2.84$ & $88.98\pm0.92$ & $169.82\pm4.07$\\
+5\% & NNLS-Ridge & $30.43\pm0.05$ & $58.06\pm0.13$ & $32.81\pm0.06$ & $163.04\pm3.70$ & $89.55\pm0.87$ & $170.01\pm4.06$\\
+5\% & ExtraTrees & $29.70\pm0.30$ & $58.17\pm0.97$ & $32.02\pm0.32$ & $147.19\pm2.76$ & $92.60\pm1.79$ & $181.86\pm4.64$\\
+5\% & Direct prediction & $29.46\pm0.33$ & $56.12\pm0.91$ & $31.76\pm0.36$ & $148.30\pm4.96$ & $87.44\pm2.33$ & $\mathbf{164.37\pm7.44}$\\
+5\% & Ours & $29.38\pm0.13$ & $57.05\pm0.38$ & $31.68\pm0.14$ & $148.35\pm2.44$ & $88.32\pm1.53$ & $171.22\pm4.06$\\
+5\% & Ours + Direct ($\alpha=0.5$) & $\mathbf{28.78\pm0.16}$ & $\mathbf{55.47\pm0.46}$ & $\mathbf{31.04\pm0.17}$ & $\mathbf{145.18\pm2.71}$ & $\mathbf{86.13\pm1.72}$ & $165.47\pm5.79$\\
+\midrule
+10\% & Uniform & $54.28$ & $87.17$ & $58.54$ & $276.78$ & $182.45$ & $338.02$\\
+10\% & Identity means & $29.85\pm0.10$ & $56.86\pm0.50$ & $32.19\pm0.10$ & $155.72\pm1.10$ & $88.54\pm0.10$ & $170.86\pm3.21$\\
+10\% & NNLS-Ridge & $30.21\pm0.05$ & $57.57\pm0.61$ & $32.58\pm0.05$ & $162.35\pm1.72$ & $88.89\pm0.11$ & $170.88\pm3.23$\\
+10\% & ExtraTrees & $29.03\pm0.18$ & $56.70\pm0.53$ & $31.30\pm0.19$ & $141.88\pm2.10$ & $89.96\pm1.21$ & $176.56\pm3.97$\\
+10\% & Direct prediction & $28.48\pm0.14$ & $54.63\pm0.76$ & $30.71\pm0.15$ & $143.01\pm4.08$ & $83.64\pm1.03$ & $\mathbf{157.80\pm3.62}$\\
+10\% & Ours & $28.78\pm0.16$ & $55.52\pm0.32$ & $31.03\pm0.17$ & $144.64\pm2.40$ & $85.50\pm0.67$ & $166.07\pm3.30$\\
+10\% & Ours + Direct ($\alpha=0.5$) & $\mathbf{28.06\pm0.10}$ & $\mathbf{53.99\pm0.34}$ & $\mathbf{30.26\pm0.11}$ & $\mathbf{140.84\pm2.59}$ & $\mathbf{82.87\pm0.61}$ & $159.39\pm3.30$\\
+\bottomrule\end{tabular}
+\end{table*}

@@ -1,0 +1,13 @@
+\begin{table*}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{标签布局控制：23,720个训练标签、完整验证标签、三次初始化。身份数为可见区间身份；后段MAE评价各行程约后80\%位置（秒）。 粗体表示各可比组内的最低误差。}\label{tab:layout}
+\begin{tabular}{llrrr}\toprule
+布局 & 方法 & 身份数 & 总体MAE & 后段MAE\\\midrule
+随机 & Ours & 301 & $28.522\pm0.216$ & $27.776$\\
+随机 & 直接预测 & 301 & $\mathbf{28.353\pm0.212}$ & $\mathbf{27.641}$\\
+前20\% & Ours & 115 & $\mathbf{50.121\pm0.938}$ & $\mathbf{55.375}$\\
+前20\% & 直接预测 & 115 & $50.472\pm0.549$ & $55.818$\\
+移动遮挡 & Ours & 310 & $\mathbf{28.774\pm0.116}$ & $\mathbf{28.348}$\\
+移动遮挡 & 直接预测 & 310 & $28.810\pm0.013$ & $28.401$\\
+\bottomrule\end{tabular}
+\end{table*}

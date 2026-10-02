@@ -1,0 +1,4 @@
+layout,source,training_labels,visible_identities
+random,/idas/users/chenyujie/cyj/BusSegPredicionV2/paper/tables/thesis_followup_20260922/block_missing_summary.csv,23720,301
+prefix_block,/idas/users/chenyujie/cyj/BusSegPredicionV2/paper/tables/thesis_followup_20260922/block_missing_summary.csv,23720,115
+moving_blackout,/idas/users/chenyujie/cyj/BusSegPredicionV2/paper/tables/thesis_followup_20260922/block_missing_summary.csv,23720,310

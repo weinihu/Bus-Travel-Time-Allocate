@@ -1,0 +1,11 @@
+\begin{table*}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{Singapore prefix-normalization check: full training/validation labels, three initializations and no historical inputs. Errors in seconds. Bold marks the lowest error within each comparable group.}\label{tab:prefix_fixed}
+\begin{tabular}{lrrr}\toprule
+Method & MAE & Prefix50 & Long MAE\\\midrule
+Ours: padding-inclusive & $19.518\pm0.057$ & $55.86$ & $\mathbf{93.07}$\\
+Ours: valid-only & $\mathbf{19.445\pm0.115}$ & $\mathbf{55.09}$ & $96.58$\\
+Ours: no prefix loss & $19.490\pm0.129$ & $55.41$ & $97.57$\\
+Direct prediction: valid-only & $19.545\pm0.096$ & $55.56$ & $96.81$\\
+\bottomrule\end{tabular}
+\end{table*}

@@ -1,0 +1,23 @@
+\RequirePackage[T1]{fontenc}
+\documentclass[journal]{IEEEtran}
+\usepackage{amsmath,amssymb,booktabs,cite,xurl,graphicx}
+\usepackage[hidelinks]{hyperref}
+\interdisplaylinepenalty=2500
+\begin{document}
+\title{Segment Running Time Estimation with Known Total Duration and Information Sharing across Repeated Segments}
+\author{}
+\maketitle
+\begin{abstract}
+Bus operation analysis needs to locate intervals with long running times, although sparse observations often cover only a whole trip and a few local positions. A known running-time total does not uniquely determine interval times, and repeated intervals vary across trips. Ours combines estimates shared across repeated intervals with bounded trip-specific redistribution, followed by proportional scaling to the known total. Development-set experiments on public Astana bus data compare three local-label budgets. In the validation-selected main comparison, Ours has lower point-estimate mean absolute error than same-input direct prediction at 1\% and 5\% (by 0.579 and 0.075 seconds) but higher error at 10\%; paired runs favor Ours in eight, six, and zero of nine runs, respectively. Identity means remain stronger at 1\%. A validation-selected 0.5-weight Ours+Direct ensemble has lower development-set MAE than direct prediction at all three budgets, but it is a separate predictor and does not outperform identity means at 1\%. Equal label counts also yield different errors when interval coverage changes. The final chronological split remains unopened, so these results are limited to development comparisons.
+\end{abstract}
+\begin{IEEEkeywords}
+Segment running time estimation, known total duration, segment information sharing, sparse supervision, bus operations.
+\end{IEEEkeywords}
+\input{sections/en/introduction}
+\input{sections/en/related}
+\input{sections/en/method}
+\input{sections/en/experiments}
+\input{sections/en/conclusion}
+\bibliographystyle{IEEEtran}
+\bibliography{references,additional_references}
+\end{document}

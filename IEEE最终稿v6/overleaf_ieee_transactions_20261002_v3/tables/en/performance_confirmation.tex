@@ -1,0 +1,10 @@
+\begin{table*}[t]
+\centering\small\setlength{\tabcolsep}{6pt}
+\caption{Separate matched optimizer-recipe check on the Astana development set. MAE is in seconds; run summaries are mean $\pm$ sample SD over nine paired runs. The percentile intervals resample trips and are conditional on the fitted models and label masks.}\label{tab:performance-confirmation}
+\begin{tabular}{lrrrr}\toprule
+Budget & Ours MAE & Direct MAE & Difference & 95\% trip-bootstrap CI\\\midrule
+1\% & $33.191\pm0.278$ & $33.186\pm0.605$ & $+0.005$ & $[-0.077,\ 0.088]$\\
+5\% & $29.590\pm0.219$ & $29.457\pm0.333$ & $+0.133$ & $[0.063,\ 0.202]$\\
+10\% & $28.629\pm0.153$ & $28.481\pm0.140$ & $+0.148$ & $[0.074,\ 0.223]$\\
+\bottomrule\end{tabular}
+\end{table*}

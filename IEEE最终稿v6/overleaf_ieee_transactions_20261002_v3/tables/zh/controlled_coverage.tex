@@ -1,0 +1,11 @@
+\begin{table*}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{同标签总数、身份及每身份标签数量的布局控制：三次初始化、有限验证标签；误差单位为秒。 粗体表示各可比组内的最低误差。}\label{tab:controlled_coverage}
+\begin{tabular}{llrr}\toprule
+布局 & 方法 & MAE & Prefix50\\\midrule
+前20\%标签 & Ours & $\mathbf{50.121\pm0.938}$ & $\mathbf{318.01}$\\
+前20\%标签 & 直接预测 & $50.472\pm0.549$ & $326.46$\\
+身份计数匹配随机 & Ours & $\mathbf{50.397\pm0.816}$ & $\mathbf{348.30}$\\
+身份计数匹配随机 & 直接预测 & $51.374\pm0.609$ & $362.85$\\
+\bottomrule\end{tabular}
+\end{table*}

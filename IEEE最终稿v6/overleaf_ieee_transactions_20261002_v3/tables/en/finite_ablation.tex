@@ -1,0 +1,11 @@
+\begin{table}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{Ablations with one 10\% training/validation mask and three initializations. Errors in seconds. Bold marks the lowest error within each comparable group.}\label{tab:finite_ablation}
+\begin{tabular}{lrr}\toprule
+Variant & MAE & Prefix50\\\midrule
+Ours & $28.709\pm0.396$ & $\mathbf{144.27}$\\
+No correction & $29.011\pm0.170$ & $144.66$\\
+No calendar & $\mathbf{28.588\pm0.132}$ & $148.43$\\
+Shuffled calendar & $29.033\pm0.153$ & $151.04$\\
+\bottomrule\end{tabular}
+\end{table}

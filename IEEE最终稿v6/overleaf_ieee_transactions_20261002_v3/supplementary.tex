@@ -1,0 +1,58 @@
+\RequirePackage[T1]{fontenc}
+\documentclass[journal]{IEEEtran}
+\usepackage{amsmath,amssymb,booktabs,cite,xurl,graphicx,balance}
+\usepackage[hidelinks]{hyperref}
+\begin{document}
+\title{Supplement: Experimental Details for Segment Running Time Estimation}
+\author{}
+\maketitle
+\section{Experimental Settings}
+The primary experiment limits training and checkpoint-selection labels. This supplement reports additional development analyses of interval coverage, complete-label prefix objectives, training budgets, and total-duration sensitivity.
+
+\section{Matched Optimizer-Recipe Check}
+\input{tables/en/performance_confirmation}
+A separate matched comparison used the optimizer recipe selected from visible validation labels (cosine decay, initial learning rate 0.001, and 960 updates) and nine paired runs per budget. It evaluates the same Astana development trips as the main paper, but represents a distinct fitted-model configuration; it is not an independent dataset replication and does not replace the budget-specific main comparison. Ours-minus-direct MAE differences are $+0.005$, $+0.133$, and $+0.148$ seconds at 1\%, 5\%, and 10\%, respectively. The 5,000-replicate trip-cluster percentile intervals condition on the fitted models and masks, so they quantify development-trip sampling uncertainty only and exclude retraining uncertainty. The interval at 1\% includes zero; the intervals at 5\% and 10\% are positive. These conditional intervals do not establish generalization beyond this development split.
+
+\section{Individual Layout Controls}
+\input{tables/en/coverage_seeds}
+Both layouts expose 23,720 training labels across the same 115 intervals, preserving each interval's count; validation exposes 2,656 labels. Training uses 240 updates, learning rate 0.003, and matched initialization and batches. Table~\ref{tab:coverage_seeds} reports three repetitions. All matched-random Ours fits select the final update, linking the results to this training budget.
+
+Count matching controls the number of labels per interval but does not balance their trips, departure periods, or contexts. It helps examine simultaneous changes in position and coverage without identifying their separate causal contributions.
+
+\section{Singapore Prefix Verification}
+\input{tables/en/prefix_fixed}
+\input{tables/en/prefix_seeds}
+The comparison uses 50,000 training, 5,000 checkpoint-selection, and 10,000 development trips with complete local labels and no additional historical inputs. Training lasts 240 updates with selection every 24. Networks, initial states, batches, and duration weights are matched; the normalization denominator, prefix coefficient, or prediction form is changed. Counting padding includes near-zero cumulative errors after the trip ends and dilutes the objective. Valid-position normalization counts actual intervals only.
+
+Table~\ref{tab:prefix_fixed} gives means and sample SD, and Table~\ref{tab:prefix_seeds} gives individual repetitions. Valid-position normalization reduces overall MAE but increases long-interval MAE from 93.069 to 96.582 seconds; no-prefix fitting gives 97.566. Compared with no-prefix fitting, overall MAE decreases by 0.026, 0.056, and 0.055 seconds in the three pairs. Normalization affects the metrics differently.
+
+\section{Singapore Common-Visible Comparison}\label{sec:singapore-common-visible}
+This known-total comparison uses 14,933 OD trips and 295,318 intervals and differs from both the Singapore prefix study and the Astana experiment. Common-visible methods use the same supplied OD total without same-segment history. The strict-past reference uses labels from strictly earlier trips and is reported separately because its information set differs. Ours uses the same bounded redistribution structure as the main method, with 15 input features, complete local labels, and duration-weighted Huber and prefix objectives. The comparison in the main paper uses a padding-inclusive prefix denominator; the valid-position variant is reported separately in the prefix experiment. It uses width 64, two Transformer layers, four heads, batch size 2,048, 240 updates, and learning rate 0.003; the prefix coefficient is 0.35. Ours and learned adapters report mean $\pm$ population SD over three seeds; deterministic references have one run. MixTTE, DutyTTE, and TriDGNet\cite{jiang2026mixtte,mao2025dutytte,zuo2026tridgnet} are same-task adaptations rather than full reproductions, and their parameter counts and training budgets are not matched. The supplied total is derived from labels and may differ from the sum of local interval labels, so these errors measure allocation under a supplied total rather than recovery from an independently measured aggregate. This evaluation group is descriptive and is not an independent test.
+
+\section{Training-Budget Checks}
+\input{tables/en/probeta_extended}
+The ProbETA adaptation uses author code\cite{xu2025probeta}, fitting Gaussian likelihoods on 256 visible singleton draws per update with Adam, learning rate 0.003, 10\% training labels, and all 26,561 checkpoint-selection labels. Selection occurs every 240 updates. This differs from the primary trip batches, limited checkpoint-selection labels, and Huber objective, so results are reported separately.
+
+Increasing the budget from 960 to 3,840 updates while preserving initialization and the first 960 draws reduces evaluation MAE from 36.403 to 32.876 seconds. Validation selects updates 3,600, 3,840, and 3,360 (Table~\ref{tab:probeta_extended}). One remains at the final update, showing that the shorter budget limited performance and that optimization adequacy still needs examination.
+
+\input{tables/en/convergence}
+The 1,920-update check in Table~\ref{tab:convergence} uses 256 visible singleton draws per update and complete validation labels. Learning rates are 0.001 for Ours and identity-only methods and 0.003 for direct prediction. All selected checkpoints precede the last update, followed by increased validation error. Because sampling, validation labels, and learning rates differ, this check analyzes training behavior rather than extending the primary ranking.
+
+\section{Complete Validation Labels and Total Sensitivity}
+\input{tables/en/layout}
+\input{tables/en/mechanism}
+Tables~\ref{tab:layout} and \ref{tab:mechanism} use all 26,561 validation labels to examine placement and calendar/correction branches. Prefix placement reduces interval coverage, while moving blackouts retain more intervals. The primary experiment further matches interval-specific counts. Complete and limited validation incur different label costs, so their results are interpreted separately.
+
+\input{tables/en/stress}
+Total sensitivity keeps the parameters of eighteen 10\% models fixed and substitutes $T'=(1+\epsilon)T$, giving 126 evaluations across seven biases. At a negative 5\% bias, Ours MAE is 28.199 seconds, below the error with an exact total, but predictions no longer match the true total. The triangle inequality gives $\sum_i|\hat t'_i-t_i|\geq|\epsilon|T$, so a common relative bias implies WAPE at least $|\epsilon|$. This experiment tests uniform scale bias rather than random measurement error.
+
+\section{Additional History and Efficiency}
+\input{tables/en/history}
+\input{tables/en/efficiency}
+The history extension uses up to 20,000 training-partition trips completed before each query with matching intervals. They can lie outside the 50,000 optimization queries and therefore provide additional labels. Table~\ref{tab:history} holds history input fixed and compares pre-rescaling interval log-time coefficients of 0 and 0.15. This experiment uses padding-inclusive prefix normalization and is reported separately from the no-history auxiliary comparison.
+
+Timing uses an RTX 4090 D and PyTorch 2.5.1+cu121, saved 10\% primary checkpoints, a fixed 256-trip batch, float32, ten warmups, and 30 synchronized forward measurements. Table~\ref{tab:efficiency} reports median and interquartile range. Loading, transfers, and fitting are excluded.
+
+\bibliographystyle{IEEEtran}
+\bibliography{references,additional_references}
+\end{document}

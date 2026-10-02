@@ -1,0 +1,13 @@
+\begin{table*}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{Label layouts with 23,720 training labels, full validation labels and three initializations. IDs: visible interval identities; later MAE: final approximately 80\% of each trip (s). Bold marks the lowest error within each comparable group.}\label{tab:layout}
+\begin{tabular}{llrrr}\toprule
+Layout & Method & IDs & All MAE & Later MAE\\\midrule
+Random & Ours & 301 & $28.522\pm0.216$ & $27.776$\\
+Random & Direct prediction & 301 & $\mathbf{28.353\pm0.212}$ & $\mathbf{27.641}$\\
+Prefix 20\% & Ours & 115 & $\mathbf{50.121\pm0.938}$ & $\mathbf{55.375}$\\
+Prefix 20\% & Direct prediction & 115 & $50.472\pm0.549$ & $55.818$\\
+Moving blackout & Ours & 310 & $\mathbf{28.774\pm0.116}$ & $\mathbf{28.348}$\\
+Moving blackout & Direct prediction & 310 & $28.810\pm0.013$ & $28.401$\\
+\bottomrule\end{tabular}
+\end{table*}

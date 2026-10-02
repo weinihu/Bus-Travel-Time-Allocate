@@ -1,0 +1,30 @@
+\RequirePackage[T1]{fontenc}
+\documentclass[journal]{IEEEtran}
+\usepackage[UTF8,scheme=plain,fontset=none]{ctex}
+\setmainfont{texgyretermes-regular.otf}[BoldFont=texgyretermes-bold.otf,
+ ItalicFont=texgyretermes-italic.otf,BoldItalicFont=texgyretermes-bolditalic.otf]
+\setCJKmainfont{FandolSong-Regular.otf}[BoldFont=FandolSong-Bold.otf,
+ ItalicFont=FandolKai-Regular.otf,SmallCapsFont=FandolSong-Regular.otf,Script=Default]
+\setCJKsansfont{FandolHei-Regular.otf}[BoldFont=FandolHei-Bold.otf,Script=Default]
+\setCJKmonofont{FandolFang-Regular.otf}[Script=Default]
+\usepackage{amsmath,amssymb,booktabs,cite,xurl,graphicx}
+\usepackage[hidelinks]{hyperref}
+\interdisplaylinepenalty=2500
+\begin{document}
+\title{已知总时长与同段信息共享下的分段运行时间估计}
+\author{}
+\maketitle
+\begin{abstract}
+公交运行分析需要定位耗时较长的站间区间，但稀疏观测往往只覆盖整趟行程及少量局部位置。已知运行总时长不能唯一确定各区间耗时，相同区间在不同行程中也存在差异。Ours结合重复区间共享估计与有界行程修正，再按已知总时长进行比例缩放。在公开Astana公交数据开发集上比较三种局部标签预算。在验证集选出的主比较中，Ours的MAE点估计在1\%和5\%预算下低于同输入直接预测，分别相差0.579秒和0.075秒；在10\%预算下则更高。九组配对运行中，Ours分别在8、6和0组取得较低误差。标签极少时，同段均值仍优于Ours。通过验证集选择0.5权重的Ours+Direct集成在三种预算下均低于直接预测，但它是独立的集成预测器，且1\%预算下仍不及同段均值。相同标签数量在不同区间覆盖布局下也产生不同误差。最终时间划分未参与评价，因此这些结果仅反映开发集比较。
+\end{abstract}
+\begin{IEEEkeywords}
+分段运行时间估计，已知总时长，同段信息共享，稀疏监督，公交运行。
+\end{IEEEkeywords}
+\input{sections/zh/introduction}
+\input{sections/zh/related}
+\input{sections/zh/method}
+\input{sections/zh/experiments}
+\input{sections/zh/conclusion}
+\bibliographystyle{IEEEtran}
+\bibliography{references,additional_references}
+\end{document}

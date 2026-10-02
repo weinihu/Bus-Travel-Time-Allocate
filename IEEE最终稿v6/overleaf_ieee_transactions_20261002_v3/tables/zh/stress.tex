@@ -1,0 +1,14 @@
+\begin{table}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{冻结10\%模型的总量偏差敏感性情景，每种方法九次运行。MAE单位为秒，WAPE单位为百分比；不同偏差情景不作排名。}\label{tab:stress}
+\begin{tabular}{lrrrr}\toprule
+偏差 & Ours MAE & 直接MAE & Ours WAPE & 直接WAPE\\\midrule
+-10\% & 28.361 & 28.337 & 30.58 & 30.56\\
+-5\% & 28.199 & 28.149 & 30.41 & 30.35\\
+-1\% & 28.500 & 28.425 & 30.73 & 30.65\\
++0\% & 28.633 & 28.551 & 30.87 & 30.79\\
++1\% & 28.788 & 28.699 & 31.04 & 30.95\\
++5\% & 29.629 & 29.507 & 31.95 & 31.82\\
++10\% & 31.150 & 30.981 & 33.59 & 33.41\\
+\bottomrule\end{tabular}
+\end{table}

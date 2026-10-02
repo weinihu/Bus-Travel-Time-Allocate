@@ -1,0 +1,11 @@
+\begin{table}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{Calendar and correction controls with one 10\% training mask, full validation labels and three initializations. Errors in seconds. Bold marks the lowest error within each comparable group.}\label{tab:mechanism}
+\begin{tabular}{lrr}\toprule
+Variant & MAE & Prefix50\\\midrule
+No correction & $29.035\pm0.175$ & $145.17$\\
+No calendar & $28.612\pm0.160$ & $150.74$\\
+Ours & $\mathbf{28.522\pm0.216}$ & $\mathbf{141.74}$\\
+Shuffled calendar & $29.082\pm0.298$ & $157.30$\\
+\bottomrule\end{tabular}
+\end{table}

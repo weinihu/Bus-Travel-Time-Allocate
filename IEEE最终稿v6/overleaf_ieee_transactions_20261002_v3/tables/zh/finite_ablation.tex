@@ -1,0 +1,11 @@
+\begin{table}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{统一有限训练与验证协议的消融：一组10\%掩码、三次初始化；误差单位为秒。 粗体表示各可比组内的最低误差。}\label{tab:finite_ablation}
+\begin{tabular}{lrr}\toprule
+变体 & MAE & Prefix50\\\midrule
+Ours & $28.709\pm0.396$ & $\mathbf{144.27}$\\
+关闭修正 & $29.011\pm0.170$ & $144.66$\\
+去日历特征 & $\mathbf{28.588\pm0.132}$ & $148.43$\\
+打乱日历特征 & $29.033\pm0.153$ & $151.04$\\
+\bottomrule\end{tabular}
+\end{table}

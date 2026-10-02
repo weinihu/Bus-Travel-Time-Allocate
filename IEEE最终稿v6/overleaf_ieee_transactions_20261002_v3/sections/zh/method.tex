@@ -1,0 +1,90 @@
+\section{方法}
+\subsection{任务定义}
+训练输入为有向站间区间序列、上下文特征及行程运行总时长，监督只使用可见的单区间标签。推理使用相同类型的输入，估计当前行程各区间的运行时间。本文的区间连接两个相邻站点，可能跨越多条道路边。重复区间通过共享参数利用其他行程的观测，同时保留不同出现之间的耗时差异。
+
+行程$q$包含$L_q$个有序区间，第$i$个区间的身份、特征和运行时间分别为$s_{qi}$、$x_{qi}$和$t_{qi}\geq0$，已知运行总时长为$T_q>0$。将有序特征和身份记为$X_q$，模型输出满足
+\begin{equation}
+\hat{\boldsymbol t}_q=f_\theta(X_q,T_q),\qquad
+\hat{\boldsymbol t}_q\geq0,\quad
+\boldsymbol1^\top\hat{\boldsymbol t}_q=T_q.
+\label{eq:task}
+\end{equation}
+总时长与区间目标采用相同的时间定义和观测边界，当前行程的局部真值不作为推理输入。
+
+训练时仅集合$V$中的单区间标签可见。若一趟行程有$m<L_q-1$个不同位置的标签，加上总时长方程后，在严格正值的可行解附近仍有$L_q-m-1$个自由方向。在两个未观测区间之间转移少量时间，就能保持现有观测不变。这正是引言中首尾分配难以区分的原因，也是利用同段观测和上下文学习分配规律的依据。
+
+\subsection{总体设计}
+图\ref{fig:framework}展示三个步骤：根据区间身份和上下文估计基础时间，读取有序行程调整各段的相对分配，再将预测分配归一到已知总时长。两个分支通过最终分段输出接受局部监督；总时长不作为编码特征。同段信息由训练中共享的参数积累，无需在推理时额外输入历史时间标签。
+\begin{figure*}[t]
+\centering
+\rule{0pt}{1.5in}
+\caption{Ours总体结构。共享分支估计正值基础时间，序列分支生成有界零和修正，已知行程总时长由比例缩放施加。}\label{fig:framework}
+\end{figure*}
+\subsection{共享表示与序列表示}
+模型为每个有效分量构造两类表示。共享表示$h^B_{qi}$由公共特征映射与身份嵌入组成，使相同身份的不同出现能够复用参数。序列表示$h^R_{qi}$在局部特征、身份与位置嵌入的基础上，加入有向邻接转移，再由Transformer处理有序序列。有效位置表示的均值经线性映射后回加到各位置，并进行层归一化。所有阶段均屏蔽填充位置。
+
+两个标量网络分别生成基础值与修正分数。令$I_q$为有效位置集合。省略序列下标，有
+\begin{align}
+b_i&=\exp\bigl(\operatorname{clip}(g_B(h^B_i),-8,12)\bigr),\\
+u_i&=g_R(h^R_i),\qquad
+z_i=u_i-\frac1{|I_q|}\sum_{j\in I_q}u_j,\qquad i\in I_q.
+\label{eq:heads}
+\end{align}
+截断避免指数运算溢出，$z_i$通过有效位置均值中心化。下一步再按基础比例中心化局部调整，以保证修正之和为零。由于共享特征包含日历等上下文，$b_i$随条件变化，不是固定历史均值。
+
+\subsection{有界重新分配}
+令$B=\sum_jb_j$、$p_i=b_i/B$，并取固定$0<\rho<1/2$，定义
+\begin{align}
+a_i&=\rho b_i\tanh(z_i),\\
+\delta_i&=a_i-p_i\sum_j a_j,\qquad r_i=b_i+\delta_i.
+\label{eq:redistribution}
+\end{align}
+第一项提出上下文相关的局部变化，第二项按基础比例去除其中的总量变化。由于$\sum_ip_i=1$，可得$\sum_i\delta_i=0$，从而$\sum_ir_i=B$。同时，
+\begin{equation}
+|\delta_i|\leq\rho b_i+p_i\rho B=2\rho b_i,
+\end{equation}
+因此
+\begin{equation}
+(1-2\rho)b_i\leq r_i\leq(1+2\rho)b_i.
+\label{eq:positive}
+\end{equation}
+有效位置的修正后取值始终为正。主比较根据可见验证标签为每个预算分别选择$\rho$；固定$\rho=0.45$的控制实验单独报告。将修正分数置零时，$\delta_i=0$，只保留基础项。
+
+幅度上界使行程调整保留与基础估计的联系，并直接保证正值；若基础估计偏差很大，这一上界也可能限制纠正能力。零和修正则去除行程分支的整体增减，使其专门处理各段之间的重新分配。最终缩放可以对任意正值向量保证加和一致，因此零和条件的作用是约束修正分支，而不是增加一个必要的守恒步骤。实验分别比较修正幅度及两种中心化形式，检验这些设计对误差的实际影响。
+
+\subsection{已知总时长调整}
+基础估计的加和不一定等于已知总时长。本文采用比例缩放满足式\eqref{eq:task}：
+\begin{equation}
+\hat t_i=T\frac{r_i}{\sum_jr_j}=T\frac{r_i}{B}.
+\label{eq:rescaling}
+\end{equation}
+等价地，
+\begin{equation}
+\hat t_i=T p_i\left[1+\rho\left(\tanh z_i-\sum_jp_j\tanh z_j\right)\right].
+\label{eq:shape}
+\end{equation}
+式\eqref{eq:shape}表明，基础估计与中心化修正决定行程内的比例，$T$决定整体尺度。有效位置保持非负，填充位置为零；浮点求和的舍入残差加到最大有效分量。固定$X$并改变总时长只会等比例改变输出。Ours与直接预测使用相同的最终调整，比较重点因而是局部分配，而非是否满足总时长。
+
+\subsection{可见局部标签学习}
+对于批次$\mathcal B$中的可见训练位置$V_{\mathcal B}$，最小化
+\begin{equation}
+\mathcal L_{\mathcal B}=\frac1{|V_{\mathcal B}|}
+\sum_{(q,i)\in V_{\mathcal B}}h_\beta(\hat t_{qi}-t_{qi}),
+\label{eq:loss}
+\end{equation}
+其中
+\begin{equation}
+h_\beta(e)=\begin{cases}
+e^2/(2\beta),&|e|<\beta,\\
+|e|-\beta/2,&\text{其他}.
+\end{cases}
+\end{equation}
+实验取$\beta=5$秒。比例调整使同一行程的各段预测相互关联，可见位置的误差通过公共分母回传到两条分支。不可见标签不参与目标计算。缩放后的总时长误差恒为零，不能单独用于学习分配，因此主实验使用局部Huber损失，无标签参考采用均匀分配。重新分配与缩放的计算量为$O(L)$，宽度为$d$的自注意力计算量为$O(L^2d)$。
+
+\subsection{完整标签下的可选辅助目标}
+主实验只使用式\eqref{eq:loss}。报告的Singapore辅助运行禁用了历史侧路；在局部标签完整的条件下，另加入时长权重和前缀误差。若$M_{qk}=1$表示有效位置，前缀目标为
+\begin{equation}
+\mathcal L_P=\frac{\sum_{q,k}M_{qk}\left|\sum_{i\leq k}(\hat t_{qi}-t_{qi})\right|/\max(T_q,1)}{\sum_{q,k}M_{qk}}.
+\label{eq:prefix}
+\end{equation}
+累计误差与归一化分母均只计有效区间，增加右侧填充不改变损失。辅助实验使用$\mathcal L_W+\lambda_P\mathcal L_P$，其中$\mathcal L_W$为按有效时长权重归一化的局部Huber损失。权重和训练配置见实验部分。额外历史标签条件下的同段对数时长目标在补充材料单独报告。

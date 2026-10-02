@@ -1,0 +1,33 @@
+{
+  "status": "closed",
+  "stage": "budget",
+  "audited_new_runs": 24,
+  "audit_sha256": "42bf4fdc364bd6b1b5ffe029a940beb97d42d14f3fffa99560501fbaa3c03832",
+  "result_hashes": {
+    "results/submission_revision_20261001/budget/f0.05_m20260919/ours/s42/result.json": "e27d4a694fa4f4d3154ba5e7380c5787a37c5be00d81806544d19f000aae2385",
+    "results/submission_revision_20261001/budget/f0.05_m20260919/ours/s43/result.json": "a8507f66c19cbaa55d8f0ad9b56e2604168a30d3f2f11cef998ef98e71fe7091",
+    "results/submission_revision_20261001/budget/f0.05_m20260919/ours/s44/result.json": "495665a5475a7916cc8a41702d6ac28ce57ffd39766ca8ab3661a18e177d77e0",
+    "results/submission_revision_20261001/budget/f0.05_m20260920/ours/s42/result.json": "297a513b48f12a90dfe515858b872553b5fa3896af0072e2cf314ffad5036613",
+    "results/submission_revision_20261001/budget/f0.05_m20260920/ours/s43/result.json": "1ee1e9afc0f71ea1e9f4f1c8b28f078b2613491cb1aeb4e4cf30e8ff8f79a1b1",
+    "results/submission_revision_20261001/budget/f0.05_m20260920/ours/s44/result.json": "6bff789f02d6d9a15a1f29170bd7ef9453169c64834bb9371dbd1eda92d390fa",
+    "results/submission_revision_20261001/budget/f0.05_m20260921/ours/s42/result.json": "5acbddad5756a516d69af9e3b213c9057a553e6809825737e63de15e86adbde3",
+    "results/submission_revision_20261001/budget/f0.05_m20260921/ours/s43/result.json": "a16c55304291fa1032265c17f3cecde4bf5182e090ca055b9145e74e0ed1b219",
+    "results/submission_revision_20261001/budget/f0.05_m20260921/ours/s44/result.json": "e31d176bfa56c35ef4d8a4c3eb0e9d70d9dc0c887ce4980f522a62555ebf3f85",
+    "results/submission_revision_20261001/budget/f0.05_m20260919/direct_time/s42/result.json": "c1e2b18627886bd5b5a18eaf0323e0140e5604cbd2d1d87a2857f538ed37a985",
+    "results/submission_revision_20261001/budget/f0.05_m20260919/direct_time/s43/result.json": "ce437f3dc10ce03281bc73a62a7dd830f4e51fd83e59a9ea770ceb6b43f6f5bb",
+    "results/submission_revision_20261001/budget/f0.05_m20260919/direct_time/s44/result.json": "590199199a65bc502c72237b9d3df286ae9cd9d42d7984d36f1727f36ebc7753",
+    "results/submission_revision_20261001/budget/f0.05_m20260920/direct_time/s42/result.json": "af26bbbea546f06484bf911c23dd64709f9e0e5afa01da701275a9c3c0de0e2b",
+    "results/submission_revision_20261001/budget/f0.05_m20260920/direct_time/s43/result.json": "20c55996e8488f06a202223ae910025f9788d09fb105ed594b830a96125f4443",
+    "results/submission_revision_20261001/budget/f0.05_m20260920/direct_time/s44/result.json": "0b15490bce12a369bd69a30e859ae07e70da112069733878d2a823c5b53825d6",
+    "results/submission_revision_20261001/budget/f0.05_m20260921/direct_time/s42/result.json": "333ca2f7c56678922eb2351a7402304ae8faf11f5f1f2797579bcaad64d8d9ee",
+    "results/submission_revision_20261001/budget/f0.05_m20260921/direct_time/s43/result.json": "9b54dd3168935168dcaccf12fd0ddc73940c36b8786f6eac3fdf1ff285c57cee",
+    "results/submission_revision_20261001/budget/f0.05_m20260921/direct_time/s44/result.json": "4534bcac1ad9c385267dfa79e3a2cfef08dfc947403dd5668238208b8f46b668",
+    "results/submission_revision_20261001/budget/f0.05_m20260919/identity_mean/result.json": "bdf2d2647f64f32402f96a5f9004cad250835620157b08d1d6927daea41eda2b",
+    "results/submission_revision_20261001/budget/f0.05_m20260920/identity_mean/result.json": "b6308e3ff6e0d861f093de54ec96ae2254cc99bae838f526043b35e40ac8419d",
+    "results/submission_revision_20261001/budget/f0.05_m20260921/identity_mean/result.json": "35cab90001634a0c4037a2de61c8df1fd07be427681481221f53009415911857",
+    "results/submission_revision_20261001/budget/f0.05_m20260919/nnls_ridge_tuned/result.json": "9b7e0bd191e6fe399dda714194439235ed6b5f70c5c0c1505908b0aee3fe5062",
+    "results/submission_revision_20261001/budget/f0.05_m20260920/nnls_ridge_tuned/result.json": "936614d9a931de803e9fc9c61cb59b9f6f3cdcd8194ce80673dabe442f02afba",
+    "results/submission_revision_20261001/budget/f0.05_m20260921/nnls_ridge_tuned/result.json": "b374467639a006e0729e2966ac21f363a7c359f90923a2d00098a2c3140aef82"
+  },
+  "decision": "preserve primary rho=.45 and fixed settings; exploratory evidence only"
+}

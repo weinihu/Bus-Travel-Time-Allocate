@@ -1,0 +1,89 @@
+\section{Methodology}
+\subsection{Task Definition}
+Training receives directed inter-stop sequences, contextual features, and trip running-time totals, with supervision from visible singleton interval labels. Inference uses the same input types to estimate the current trip's interval times. An interval connects adjacent stops and may span several road edges. Repeated intervals share parameters to use observations from other trips while allowing their durations to differ.
+
+Trip $q$ contains $L_q$ ordered intervals. Interval $i$ has identity $s_{qi}$, features $x_{qi}$, and running time $t_{qi}\geq0$; the known total is $T_q>0$. Writing the ordered features and identities as $X_q$, the output satisfies
+\begin{equation}
+\hat{\boldsymbol t}_q=f_\theta(X_q,T_q),\qquad
+\hat{\boldsymbol t}_q\geq0,\quad
+\boldsymbol1^\top\hat{\boldsymbol t}_q=T_q.
+\label{eq:task}
+\end{equation}
+The total and interval targets use the same time definition and observation boundaries. Local truth from the current trip is not an inference input.
+
+Only positions in $V$ have training labels. With $m<L_q-1$ distinct labeled positions, the local observations and total leave $L_q-m-1$ free directions near a strictly positive feasible allocation. Moving a small amount between two unobserved intervals preserves every observation. This explains the ambiguity between the first and last intervals in the introduction and motivates learning allocation patterns from repeated intervals and context.
+
+\subsection{Overall Design}
+Figure~\ref{fig:framework} shows three steps: estimate base times from interval identities and context, adjust their relative allocation using the ordered trip, and normalize the predicted profile to the known total. Both branches receive local supervision through the final outputs. The total is not an encoder feature; information from repeated intervals is accumulated in shared training parameters, without requiring historical target records at inference.
+\begin{figure*}[t]
+\centering
+\rule{0pt}{1.5in}
+\caption{Overview of Ours. The shared branch estimates positive base times, and the sequence branch predicts a bounded zero-sum correction. The known trip total is imposed by proportional rescaling.}\label{fig:framework}
+\end{figure*}
+\subsection{Shared and Sequence Representations}
+We construct two representations for each valid component. A shared representation $h^B_{qi}$ combines a common feature mapping with an identity embedding. Its parameters are reused across occurrences of the same identity. A sequence representation $h^R_{qi}$ combines local features, identity and position embeddings, a directed-neighbor transition, and a Transformer encoder. A projected mean of the valid sequence representations is added back to the tokens before layer normalization. Padding is masked throughout.
+
+The base and correction scores are produced by scalar multilayer heads. Let $I_q$ denote valid positions. Suppressing the sequence index,
+\begin{align}
+ b_i&=\exp\bigl(\operatorname{clip}(g_B(h^B_i),-8,12)\bigr),\\
+ u_i&=g_R(h^R_i),\qquad
+ z_i=u_i-\frac{1}{|I_q|}\sum_{j\in I_q}u_j,\qquad i\in I_q.
+\label{eq:heads}
+\end{align}
+Clipping protects exponentiation against overflow, and $z_i$ is centered over valid positions. The next step centers local adjustments in proportion to the base to make their sum zero. Because the shared features include calendar context, $b_i$ varies with conditions rather than being a fixed historical mean.
+
+\subsection{Bounded Redistribution}
+Let $B=\sum_jb_j$ and $p_i=b_i/B$. With a fixed $0<\rho<1/2$, define
+\begin{align}
+ a_i&=\rho b_i\tanh(z_i),\\
+ \delta_i&=a_i-p_i\sum_j a_j,\qquad r_i=b_i+\delta_i.
+\label{eq:redistribution}
+\end{align}
+The first term proposes a context-dependent local change. The second removes its aggregate component in proportion to the base. Since $\sum_i p_i=1$, the correction satisfies $\sum_i\delta_i=0$ and therefore $\sum_ir_i=B$. Furthermore,
+\begin{equation}
+ |\delta_i|\leq\rho b_i+p_i\rho B=2\rho b_i,
+\end{equation}
+which gives
+\begin{equation}
+ (1-2\rho)b_i\leq r_i\leq(1+2\rho)b_i.
+\label{eq:positive}
+\end{equation}
+Thus every valid corrected component remains strictly positive. The main comparison selects $\rho$ separately for each label budget using visible validation labels; fixed-$\rho=0.45$ controls are reported separately. Setting the correction scores to zero removes this redistribution and leaves the base unchanged.
+
+The amplitude bound keeps trip adjustments related to the base and guarantees positive values. It may also limit correction when the base is severely biased. Zero-sum centering removes the trip branch's aggregate increase or decrease so that it handles redistribution between intervals. Final rescaling guarantees total consistency for any positive vector; centering therefore constrains the correction branch rather than providing a necessary conservation step. Experiments compare amplitudes and centering forms to examine their effect on error.
+
+\subsection{Adjustment to the Known Total}
+The base estimates need not sum to the known duration. Proportional rescaling imposes Eq.~\eqref{eq:task},
+\begin{equation}
+ \hat t_i=T\frac{r_i}{\sum_jr_j}=T\frac{r_i}{B}.
+\label{eq:rescaling}
+\end{equation}
+Equivalently,
+\begin{equation}
+ \hat t_i=T p_i\left[1+\rho\left(\tanh z_i-\sum_jp_j\tanh z_j\right)\right].
+\label{eq:shape}
+\end{equation}
+Equation~\eqref{eq:shape} shows that the base and centered correction determine within-trip proportions, while $T$ determines their scale. Valid predictions remain nonnegative and padding is zero. Floating-point summation residuals are added to the largest valid component. Changing $T$ with $X$ fixed rescales all predictions proportionally. Ours and direct prediction use the same final adjustment, making local allocation the focus of their comparison.
+
+\subsection{Learning from Visible Local Targets}
+For visible training positions $V_{\mathcal B}$ in a batch $\mathcal B$, we minimize
+\begin{equation}
+ \mathcal L_{\mathcal B}=\frac{1}{|V_{\mathcal B}|}
+ \sum_{(q,i)\in V_{\mathcal B}}h_\beta(\hat t_{qi}-t_{qi}),
+\label{eq:loss}
+\end{equation}
+where
+\begin{equation}
+ h_\beta(e)=
+ \begin{cases}e^2/(2\beta),&|e|<\beta,\\ |e|-\beta/2,&\text{otherwise}.
+ \end{cases}
+\end{equation}
+We use $\beta=5$ seconds. Rescaling couples interval predictions through their common denominator, allowing visible errors to propagate into both branches. Hidden labels do not contribute to the objective. Total error after rescaling is identically zero and cannot train the allocation alone; the primary experiment therefore uses local Huber supervision, with uniform allocation as a label-free reference. Redistribution and rescaling require $O(L)$ work, while self-attention requires $O(L^2d)$ for width $d$.
+
+\subsection{Optional Objectives with Complete Labels}
+The primary experiment uses only Eq.~\eqref{eq:loss}. The reported Singapore auxiliary runs disable the history sidecar; with complete local labels, they add duration weights and a prefix objective. With $M_{qk}=1$ at valid positions,
+\begin{equation}
+\mathcal L_P=\frac{\sum_{q,k}M_{qk}\left|\sum_{i\leq k}(\hat t_{qi}-t_{qi})\right|/\max(T_q,1)}{\sum_{q,k}M_{qk}}.
+\label{eq:prefix}
+\end{equation}
+Cumulative errors and the denominator count valid intervals only, making the loss invariant to additional right padding. The auxiliary objective is $\mathcal L_W+\lambda_P\mathcal L_P$, where $\mathcal L_W$ normalizes weighted local Huber errors by the sum of valid duration weights. We specify these weights in the experiments and report the additional-history log-time objective separately in the supplement.

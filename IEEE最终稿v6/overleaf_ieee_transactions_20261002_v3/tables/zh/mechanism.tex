@@ -1,0 +1,11 @@
+\begin{table}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{日历特征与修正消融：一个10\%训练掩码、完整验证标签、三次初始化；误差单位为秒。 粗体表示各可比组内的最低误差。}\label{tab:mechanism}
+\begin{tabular}{lrr}\toprule
+变体 & MAE & Prefix50\\\midrule
+关闭修正 & $29.035\pm0.175$ & $145.17$\\
+去日历特征 & $28.612\pm0.160$ & $150.74$\\
+Ours & $\mathbf{28.522\pm0.216}$ & $\mathbf{141.74}$\\
+打乱日历特征 & $29.082\pm0.298$ & $157.30$\\
+\bottomrule\end{tabular}
+\end{table}

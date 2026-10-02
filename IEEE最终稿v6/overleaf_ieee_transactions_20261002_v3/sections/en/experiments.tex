@@ -1,0 +1,117 @@
+\section{Experiments}
+The main comparisons use Astana data with the same local loss and training settings. A Singapore auxiliary experiment evaluates the prefix objective with complete local labels.
+
+\subsection{Data and Time Definitions}
+Astana\cite{astana2025} was released on Zenodo on June 29, 2025 under CC BY 4.0, with data collected on three bus routes during July--September 2024. The interval records used here span July 29--September 21, 2024 and contain 785,976 records from 19,769 trips. Preprocessing requires a continuous directed stop chain, running times of 5--1,800 seconds, and dwell times of 0--900 seconds. Trips violating these conditions are removed in full. The resulting sample contains 10,910 trips, 439,659 intervals, and 586 directed interval identities. The longest valid trip has 55 intervals, which sets the padding length; longer trips are not truncated.
+
+Interval identities combine direction and endpoint stop identifiers. Targets use the recorded running-time field, and their sum supplies the input total, excluding dwell. Trips are ordered chronologically and split 60\%/20\%/20\%. From the first 60\%, 5,891 trips are used for fitting and 655 for checkpoint selection; the middle 20\% (2,182 trips) is the development evaluation set. The final 20\% is excluded from the reported results (Table~\ref{tab:partitions}).
+\begin{table}[t]
+\centering\footnotesize
+\caption{Astana partitions and valid-label populations.}\label{tab:partitions}
+\begin{tabular}{lrr}\toprule
+Role & Trips & Intervals\\\midrule
+Model fitting & 5,891 & 237,203\\
+Checkpoint selection & 655 & 26,561\\
+Development evaluation & 2,182 & 87,715\\
+\bottomrule\end{tabular}
+\end{table}
+
+Models use 31 geometry, route, stop, and departure-calendar features. Normalization is estimated from fitting features only. Inputs exclude target-derived statistics, actual interval entry times, label-quality fields, and additional historical targets.
+
+The Singapore auxiliary collection spans May 5--June 19, 2017. Interval targets are differences between timestamp midpoints of consecutive observed stop runs; dwell is not independently removed. Each source record contributes its longest valid contiguous fragment, requiring at least eight intervals, durations of 30--1,800 seconds, and chord speed below 25 m/s. The maximum length is 87; no interpolation or cross-record stitching is used. Training covers May 5--June 5, checkpoint selection June 6--8, and development evaluation June 10--16, with a one-day gap. We use 50,000, 5,000, and 10,000 trips respectively, including 197,301 development intervals. Because the target definition differs from Astana, these results are reported separately.
+
+\subsection{Label Budgets and Training Settings}
+Training and validation use the same label percentage, with budgets of 1\%, 5\%, and 10\%. Training exposes 2,372, 11,860, and 23,720 labels respectively; validation exposes 265, 1,328, and 2,656. Valid positions are randomly permuted and sampled using three nested layouts. Each layout is trained with three independent initializations, giving nine runs per neural method and budget. Paired methods share initial states, batches, and visible labels; hidden targets are masked before training and validation.
+
+The encoder has width 64, two Transformer layers, four heads, feed-forward width 256, and zero dropout. The primary Ours/direct comparisons use AdamW with initial learning rate 0.001, cosine decay, 960 updates, and checkpoint selection every 24 updates. The validation-selected correction bounds are $\rho=0.10$, 0.05, and 0.25 for the 1\%, 5\%, and 10\% budgets. Coverage and mechanism controls use a separate 240-update protocol with AdamW learning rate 0.003, weight decay $10^{-4}$, gradient clipping at 5, and batches of 256 trips cycled through a random permutation. Calendar/correction and correction-parameterization ablations use three 10\% label layouts and three paired initializations per layout; interval-count controls use one layout and three initializations. Development metrics use all local labels in the development evaluation set.
+
+Singapore uses complete training and checkpoint-selection labels, batches of 2,048, and the same network and optimizer settings. Auxiliary local weights are
+\begin{equation}
+w_{qi}=1+0.75\frac{t_{qi}}{\max(\bar t_q,1)}
++1.5\min\left(\frac{(t_{qi}-180)_+}{180},5\right),
+\end{equation}
+where $\bar t_q$ is the valid mean duration. We normalize by the valid weight sum and use prefix coefficient 0.35. These objectives require complete labels and are confined to the auxiliary experiment. Additional-history conditions are reported separately in the supplement.
+
+\subsection{Baselines and Metrics}
+Uniform allocation assigns $T_q/L_q$ per interval. Segment means pool visible training labels for each interval, use the global visible-label mean for unsupported intervals, and rescale to the total. NNLS-Ridge fits nonnegative identity coefficients by
+\begin{align}
+\min_{\boldsymbol v\geq0}\quad&
+\frac{\|C\boldsymbol v-\boldsymbol T\|_2^2}{N_F}
++\frac{\lambda}{S}\|\boldsymbol v\|_2^2\nonumber\\
+&+\frac{\alpha}{N_V}\sum_{(q,i)\in V}(v_{s_{qi}}-t_{qi})^2,
+\label{eq:inverse}
+\end{align}
+where $C$ counts intervals in trips; $N_F$, $N_V$, and $S$ count training trips, visible labels, and identities. Ten candidates combine $\lambda\in\{0.01,1\}$ and $\alpha\in\{0,1,10,100,1000\}$, selected using the same limited validation labels. Predictions are rescaled to the total. This baseline tests nonnegative aggregate inversion without context.
+
+Direct prediction uses the same features and sequence backbone, with local log-duration and route-ratio mappings followed by identical total rescaling. It omits the base-plus-correction structure. Both methods instantiate the same parameters and share initial states; their actual computation and gradient paths depend on the prediction form. The author-code ProbETA adaptation\cite{xu2025probeta} trains on visible singleton Gaussian likelihoods and obtains a conditional nonnegative solution given the total. Its inputs and loss differ, so its results and training-budget checks are reported separately.
+
+MAE and RMSE are microaveraged over valid intervals; $\mathrm{WAPE}(\%)=100\sum|\hat t-t|/\sum_qT_q$. Prefix50 averages absolute cumulative error at $\lceil L_q/2\rceil$ over trips. Top-10\% MAE scores each trip's $\lceil0.1L_q\rceil$ largest true intervals. Long intervals have true duration at least 300 seconds. Labels define evaluation groups only.
+
+Tables report mean errors and sample standard deviations across runs. The final chronological split remains unopened.
+
+\subsection{Overall Results}
+\input{tables/en/limited}
+\input{tables/en/paired}
+Each neural method has nine paired runs per label budget, sharing the three label layouts and three initializations. ExtraTrees selects minimum leaf sizes 2, 8, and 8 using validation data and is evaluated on the three layouts. Identity means and NNLS-Ridge are fitted separately at each label budget. The fixed-weight Ours+Direct row is a validation-selected ensemble ($\alpha=0.5$), not the Ours model alone.
+
+At 1\%, identity means have the lowest MAE (31.498 s); Ours reaches 32.607 s and direct prediction 33.186 s. At 5\%, Ours (29.383 s) is 0.075 s below direct prediction (29.457 s), with six of nine paired runs favoring Ours; the ensemble gives 28.783 s. At 10\%, Ours (28.776 s) is 0.295 s above direct prediction (28.481 s), and none of the nine paired runs favor Ours; the ensemble gives 28.065 s. The ensemble has the lowest mean MAE at 5\% and 10\%, but identity means remain better at 1\%; long-interval MAE also remains higher for Ours at all three budgets. These development results do not establish a uniform advantage for Ours across budgets or metrics.
+
+Fig.~\ref{fig:comparison} reports layout-level MAE differences from direct prediction. Ours is lower in eight of nine paired runs at 1\%, six at 5\%, and none at 10\% (Table~\ref{tab:paired}). The plotted points aggregate the three initializations within each layout for neural methods; the error bars show sample standard deviation across the three layouts. This visualization summarizes development comparisons and does not provide an independent test estimate.
+
+Across all three budgets, Ours has higher long-interval MAE than direct prediction (Table~\ref{tab:limited}), despite exact total conservation. Errors in a few long intervals can therefore remain hidden by an accurate trip sum.
+
+\begin{figure*}[t]
+\centering\includegraphics[width=\textwidth]{figures/followup_mae_differences.pdf}
+\caption{Development-set MAE difference from direct prediction across three label layouts. Negative values indicate lower MAE. Neural results average three paired initializations within each layout; identity means and NNLS use the mean direct score for each layout, while ExtraTrees uses the paired seed-42 direct run. Points show layouts and horizontal bars show the across-layout mean and sample standard deviation.}
+\label{fig:comparison}
+\end{figure*}
+
+\subsection{Label Quantity and Coverage}
+Label budgets change the amount of information available for learning, but equal counts can cover different intervals. In a layout experiment with complete validation labels, restricting 23,720 training labels to the first 20\% of each trip reduces observed identities from 301 to 115 and raises our method's MAE from 28.522 to 50.121 seconds. A moving 40\% blackout retains 310 identities and gives 28.774 seconds. Prefix placement changes both positions and interval coverage, so the original comparison cannot identify position's independent effect. Full results are reported in the supplement.
+
+\input{tables/en/controlled_coverage}
+To distinguish these changes, we use the main experiment's limited validation labels, fix the first-20\% layout, and count labels for each of its 115 intervals. A random training layout then draws \emph{exactly the same count for every interval}, totaling 23,720. Methods share validation labels, initial states, and batches. The layouts have identical interval sets and counts, while the labels occupy different trip positions.
+
+Our method gives MAE of 50.121 seconds under prefix placement and 50.397 under matched random placement; direct prediction gives 50.472 and 51.374 (Table~\ref{tab:controlled_coverage}). Randomizing positions does not recover the roughly 29-second error with broader interval coverage, weakening an explanation that attributes all deterioration to early placement. This control uses one layout, does not fully balance trips and contexts, and selects the final update in all three matched-random fits. These results do not identify coverage's contribution independently of position.
+
+\subsection{Correction Mechanisms and Ablations}
+\input{tables/en/redistribution}
+We compare correction amplitudes and weighted centering under a separate fixed-$\rho=0.45$, 240-update protocol across three 10\% training/validation layouts and three paired initializations per layout (Table~\ref{tab:redistribution}). With weighted centering, $\rho=0.10$, 0.25, and 0.45 give MAE of 28.849, 28.677, and 28.633 seconds; their RMSE values are 56.063, 55.503, and 54.930 seconds. The 0.25 setting has the lowest Prefix50, so no amplitude leads on every metric. These controls are separate from the validation-selected, 960-update main comparison.
+
+Removing weighted centering from Eq.~\eqref{eq:redistribution}, setting $r_i=b_i+\rho b_i\tanh z_i$, and applying the same total rescaling gives the following output. For $m=\sum_jp_j\tanh z_j$,
+\begin{equation}
+\hat t_i^{\mathrm{unc}}=T p_i\left[1+\frac{\rho(\tanh z_i-m)}{1+\rho m}\right].
+\end{equation}
+Compared with Eq.~\eqref{eq:shape}, rescaling also changes the effective correction amplitude. This comparison therefore tests two parameterizations without isolating centering's effect. The uncentered variant has MAE 28.632 seconds, effectively tied with the fixed-$\rho=0.45$ centered control at 28.633 seconds. Paired differences in Fig.~\ref{fig:ablation}(b)--(d) vary across metrics and runs, and these results do not establish an accuracy benefit from weighted zero-sum centering. It preserves the sum of the base estimates, while local accuracy still depends on the learned allocation.
+
+\input{tables/en/finite_ablation}
+Table~\ref{tab:finite_ablation} summarizes nine outcomes per condition across three 10\% training/validation layouts and three paired initializations per layout. Removing trip correction raises MAE from 28.633 to 29.038 seconds in all nine paired comparisons. Correction improves the base estimate within the same model, but this ablation does not establish an advantage of the complete method over direct prediction.
+
+Joint calendar shuffling preserves feature combinations within each partition but breaks their association with trips; MAE rises to 29.010 seconds, with higher error than the primary model in all nine paired comparisons. Removing calendar fields gives a slightly lower mean MAE of 28.570 seconds, although RMSE and Prefix50 are higher. Mismatched information and missing information therefore have different effects, and these results do not establish that calendar features are indispensable. Both branches receive calendar context, and correction gains cannot be attributed entirely to one temporal factor.
+
+The Singapore auxiliary experiment compares prefix-loss normalization with complete labels. Our method gives MAE of 19.518 seconds when normalization includes padding, 19.445 when it counts valid positions, and 19.490 without the prefix objective; direct prediction with valid-position normalization gives 19.545. The valid-position variant is slightly better than direct prediction and no-prefix fitting in all three pairs, but has higher long-interval error than the padding-inclusive variant. Overall and long-interval errors change differently; this complete-label experiment also differs from sparse Astana supervision.
+
+\begin{figure}[t]
+\centering\includegraphics[width=\columnwidth]{figures/ablation_panels.pdf}
+\caption{Paired error differences; positive values indicate increased error. References are Ours in (a), weighted centering with $\rho=0.45$ in (b)--(d), and valid-position prefix normalization in (e)--(f). Open markers show paired runs; filled diamonds and error bars show the mean and sample standard deviation (nine pairs per Astana condition, three per Singapore condition).}
+\label{fig:ablation}
+\end{figure}
+
+\subsection{Interval Cases and Efficiency}
+\begin{figure}[t]
+\centering\includegraphics[width=\columnwidth]{figures/local_cases.pdf}
+\caption{Development-trip interval times and signed errors. Cases nearest the median and 90th percentile of Ours trip MAE are selected from one paired run at 10\% labels. Black, blue, and orange curves show truth, Ours, and direct prediction, respectively.}\label{fig:cases}
+\end{figure}
+Fig.~\ref{fig:cases} shows local errors under the same total. The selected trips contain 44 and 40 intervals; their Ours/direct MAE values are 25.997/26.486 and 43.178/43.521 seconds. The larger errors are compensated by other intervals, so exact total conservation does not ensure an accurate local profile.
+
+Timing uses the same RTX 4090 D, float32, and 256-trip batches, with ten warmups and 30 synchronized measurements. Both methods instantiate 195,079 parameters with different computation paths. The supplement reports median forward latency and interquartile ranges. Measurements include network computation and total rescaling but exclude input loading and host transfer.
+
+\subsection{Additional Evaluation}
+\input{tables/en/common_visible_singapore}
+Table~\ref{tab:singapore-common-visible} reports a separate Singapore known-total comparison. It covers 14,933 OD trips and 295,318 segments and uses a different target definition from Astana. The common-visible methods use no same-segment history; the strict-past reference uses earlier same-segment labels and is reported separately. Ours uses the same allocation structure with complete local labels, duration weighting, and padding-inclusive prefix normalization, unlike the sparse-label Astana protocol. MixTTE, DutyTTE, and TriDGNet are task adaptations\cite{jiang2026mixtte,mao2025dutytte,zuo2026tridgnet}; their parameters and training budgets are not matched. Supplementary material gives the protocol details. These results are descriptive and are not an independent test.
+
+After excluding dates present in training or validation, 2,060 trips and 82,783 intervals give 10\% Ours/direct MAE of 28.526/28.456 seconds. The subset of unseen complete ordered routes contains 446 trips and 17,164 intervals, with MAE of 35.963/35.315. Route-composition changes coincide with higher error, although an unseen complete route need not contain only unseen intervals.
+
+The supplement reports seven total-bias conditions and training-budget checks. Extending the ProbETA adaptation from 960 to 3,840 updates reduces MAE from 36.403 to 32.876 seconds. One run selects the final validation point, indicating that its performance depends on the training budget.
+
+Astana totals are derived from local labels, and labels are masked artificially. The reported scores are development results, not estimates from an untouched test set. Independent tests with measured trip totals, data from other cities, and full comparisons with native decomposition methods are needed to assess practical use and generalization.

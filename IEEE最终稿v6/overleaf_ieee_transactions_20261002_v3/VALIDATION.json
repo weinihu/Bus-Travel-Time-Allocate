@@ -1,0 +1,110 @@
+{
+  "status": "submission_language_and_evidence_revision_complete_not_submission_certification",
+  "tests": "Manuscript-only v3 verification: Tectonic 0.17.0 compiled all four TeX documents; model training and code tests were not rerun.",
+  "primary_saved_runs": 42,
+  "supplementary_saved_runs": 27,
+  "deterministic_baseline_evaluations": 12,
+  "total_bias_evaluations": 126,
+  "teacher_revision_training_runs": 36,
+  "additional_training_runs": 27,
+  "multi_layout_extension_runs": 36,
+  "multi_layout_extension_gate": "closed",
+  "optimizer_screening_runs": 8,
+  "optimizer_confirmation_runs": 54,
+  "optimizer_confirmation_gate": "closed",
+  "additional_training_runs_since_revision": 206,
+  "additional_baseline_runs": 42,
+  "main_sections": 5,
+  "discussion_removed": true,
+  "official_template_files": {
+    "IEEEtran.cls": "c972aca108fda004c3514d63658e02816da2e54d9a1451e870b9bd970e003f55",
+    "IEEEtran.bst": "b445bc94cfde36bb836a4c6f5ce7149f1488d76dfe8acd39a8771f084ba8f348"
+  },
+  "authors_unresolved": true,
+  "overleaf_online_modified": false,
+  "cross_domain_training_completed": false,
+  "framework_replacement_pending": true,
+  "visual_review": "framework slot, six-panel figure, local cases and rendered manuscript pages checked after compilation",
+  "documents": {
+    "main": {
+      "pages": 9,
+      "page_size": "612 x 792 pts (letter)",
+      "references": 12,
+      "word_boxes_checked": 6677,
+      "pdf_sha256": "64ad0a0815dae1d8dc414e4330f17b56d1666215b6eea950de7aa65cc36ef052",
+      "poppler_xml_control_characters_filtered": 5,
+      "overfull_boxes": 0,
+      "missing_glyphs": 0,
+      "undefined_references": 0
+    },
+    "main_zh": {
+      "pages": 7,
+      "page_size": "612 x 792 pts (letter)",
+      "references": 12,
+      "word_boxes_checked": 2813,
+      "pdf_sha256": "29e1ab4972be707f5bde87f254dd8d41464de9fe4b867f48d39c91c9db0a8ecb",
+      "poppler_xml_control_characters_filtered": 5,
+      "overfull_boxes": 0,
+      "missing_glyphs": 0,
+      "undefined_references": 0
+    },
+    "supplementary": {
+      "pages": 4,
+      "page_size": "612 x 792 pts (letter)",
+      "references": 4,
+      "word_boxes_checked": 1879,
+      "pdf_sha256": "50140d8489cd45cfb0ed5e8baf4749e468a9d22f5f7952b62a4d63e1648b664a",
+      "poppler_xml_control_characters_filtered": 0,
+      "overfull_boxes": 0,
+      "missing_glyphs": 0,
+      "undefined_references": 0
+    },
+    "supplementary_zh": {
+      "pages": 4,
+      "page_size": "612 x 792 pts (letter)",
+      "references": 4,
+      "word_boxes_checked": 786,
+      "pdf_sha256": "3d9a6a42784badeb44ea457814c7d3279799585433931d477e606acf893a89f8",
+      "poppler_xml_control_characters_filtered": 0,
+      "overfull_boxes": 0,
+      "missing_glyphs": 0,
+      "undefined_references": 0
+    }
+  },
+  "nonblocking_engine_notes": [
+    "All four documents compiled with resolved bibliography and cross-references; logs contain no overfull boxes or missing glyphs.",
+    "Underfull line-breaking warnings remain in the English and Chinese main manuscripts."
+  ],
+  "budget_rho_confirmation_training_runs": 27,
+  "tree_confirmation_fits": 9,
+  "blend_confirmation_layouts": 27,
+  "test_labels_opened": false,
+  "headline_development_mae_seconds": {
+    "budgets_percent": [
+      1,
+      5,
+      10
+    ],
+    "ours": [
+      32.607,
+      29.383,
+      28.776
+    ],
+    "direct": [
+      33.186,
+      29.457,
+      28.481
+    ],
+    "ours_paired_wins_of_9": [
+      8,
+      6,
+      0
+    ],
+    "scope": "validation-selected configuration evaluated on development labels; test remains sealed"
+  },
+  "budget_rho_screen_training_runs": 36,
+  "rho_and_budget_rho_confirmation_training_runs": 45,
+  "budget_rho_confirmed_layout_runs": 27,
+  "tree_screen_fits": 27,
+  "manuscript_version": "IEEE_Transactions_修订稿_Overleaf_20261002_v3"
+}

@@ -1,0 +1,10 @@
+\begin{table}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{1,920-update training check: one 10\% training mask and full validation labels. Learning rates differ by method; this table does not rank methods. Selected steps follow repeats 1/2/3; MAE in seconds.}\label{tab:convergence}
+\begin{tabular}{lrr}\toprule
+Method & MAE & Selected steps\\\midrule
+Ours & $28.893$ & 1200/1200/1680\\
+Direct prediction & $28.620$ & 1440/480/1680\\
+Identity inputs & $28.946$ & 1440/960/1200\\
+\bottomrule\end{tabular}
+\end{table}

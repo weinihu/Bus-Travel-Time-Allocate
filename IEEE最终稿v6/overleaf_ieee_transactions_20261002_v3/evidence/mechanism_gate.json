@@ -1,0 +1,18 @@
+{
+  "status": "closed",
+  "stage": "mechanism",
+  "audited_new_runs": 9,
+  "audit_sha256": "6a04bd5039cd327b8e5f814de7c21a40b46b3a75dd6282cc73d2c54d1f4f0272",
+  "result_hashes": {
+    "results/submission_revision_20261001/mechanism/rho010/s42/result.json": "f3478d91c3a7380d4c111b8610b28e35dfacc63aae23891064a15c60f2759413",
+    "results/submission_revision_20261001/mechanism/rho010/s43/result.json": "7793ff118e4121c18b9bc7b4b8d746a50aad2d92041b54203bf3e8899b720c4d",
+    "results/submission_revision_20261001/mechanism/rho010/s44/result.json": "0033ba209c49fbd7236f273a17184e85a64f875e3518646d6d7926912c45807e",
+    "results/submission_revision_20261001/mechanism/rho025/s42/result.json": "ec426582a280562ab30bbe4a7c48dc1bf0f5fa89d8ea39d0be87e4589e78ddc9",
+    "results/submission_revision_20261001/mechanism/rho025/s43/result.json": "828d14825af207713a02d43113dfee460fa334e78f698d155db041d5298d001b",
+    "results/submission_revision_20261001/mechanism/rho025/s44/result.json": "91a52e5d73574d7b9c75407cd6e72db37a511cf4a929fb92abda2ce2a122fbf7",
+    "results/submission_revision_20261001/mechanism/uncentered045/s42/result.json": "91f8623c0ee77165227087aedc422f660ddb0bc3b026106130124596a344f19a",
+    "results/submission_revision_20261001/mechanism/uncentered045/s43/result.json": "9d09d315fdecad0639d819eb1dcdd3ad6986265ff851a3d18ac23b709b400912",
+    "results/submission_revision_20261001/mechanism/uncentered045/s44/result.json": "c528f2a046572a220a4c7cf0283dccd59dd1944145414e96fd4a1fb2f0ccd414"
+  },
+  "decision": "preserve primary rho=.45 and fixed settings; exploratory evidence only"
+}

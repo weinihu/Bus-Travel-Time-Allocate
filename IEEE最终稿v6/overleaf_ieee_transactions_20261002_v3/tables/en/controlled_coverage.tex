@@ -1,0 +1,11 @@
+\begin{table*}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{Label-placement control with identical identity-specific label counts; three initializations and limited validation labels. Errors in seconds. Bold marks the lowest error within each comparable group.}\label{tab:controlled_coverage}
+\begin{tabular}{llrr}\toprule
+Layout & Method & MAE & Prefix50\\\midrule
+First 20\% & Ours & $\mathbf{50.121\pm0.938}$ & $\mathbf{318.01}$\\
+First 20\% & Direct prediction & $50.472\pm0.549$ & $326.46$\\
+Identity-matched random & Ours & $\mathbf{50.397\pm0.816}$ & $\mathbf{348.30}$\\
+Identity-matched random & Direct prediction & $51.374\pm0.609$ & $362.85$\\
+\bottomrule\end{tabular}
+\end{table*}

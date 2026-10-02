@@ -1,0 +1,10 @@
+\begin{table*}[t]
+\centering\small\setlength{\tabcolsep}{6pt}
+\caption{Astana开发集上的另一组匹配优化配置检查。MAE单位为秒；运行结果为九组配对模型的均值$\pm$样本标准差。区间由行程重采样得到，并以已拟合模型和标签布局为条件。}\label{tab:performance-confirmation}
+\begin{tabular}{lrrrr}\toprule
+预算 & Ours MAE & Direct MAE & 差值 & 行程Bootstrap 95\%区间\\\midrule
+1\% & $33.191\pm0.278$ & $33.186\pm0.605$ & $+0.005$ & $[-0.077,\ 0.088]$\\
+5\% & $29.590\pm0.219$ & $29.457\pm0.333$ & $+0.133$ & $[0.063,\ 0.202]$\\
+10\% & $28.629\pm0.153$ & $28.481\pm0.140$ & $+0.148$ & $[0.074,\ 0.223]$\\
+\bottomrule\end{tabular}
+\end{table*}

@@ -1,0 +1,11 @@
+\begin{table*}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{Correction controls under a separate fixed-$\rho=0.45$, 240-update protocol across three 10\% layouts and three paired initializations per layout. Errors in seconds; mean $\pm$ sample SD. Uncentered scaling also changes effective amplitude. Bold marks the lowest error within each comparable group.}\label{tab:redistribution}
+\begin{tabular}{llrrr}\toprule
+Variant & $\rho$ & MAE & RMSE & Prefix50\\\midrule
+Weighted centering & 0.10 & $28.849\pm0.189$ & $56.063\pm0.328$ & $145.34$\\
+Weighted centering & 0.25 & $28.677\pm0.184$ & $55.503\pm0.353$ & $\mathbf{143.64}$\\
+Weighted centering (fixed-$\rho$ control) & 0.45 & $28.633\pm0.239$ & $\mathbf{54.930\pm0.401}$ & $145.26$\\
+Without weighted centering & 0.45 & $\mathbf{28.632\pm0.218}$ & $55.030\pm0.227$ & $143.94$\\
+\bottomrule\end{tabular}
+\end{table*}

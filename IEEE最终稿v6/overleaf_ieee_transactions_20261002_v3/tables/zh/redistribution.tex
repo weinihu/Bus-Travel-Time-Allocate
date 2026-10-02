@@ -1,0 +1,11 @@
+\begin{table*}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{单独的固定$\rho=0.45$、240步修正控制：三个10\%训练/验证标签布局，每个布局三次配对初始化。误差单位为秒，报告均值与样本标准差。无加权中心化后的缩放也改变有效幅度。粗体表示各可比组内的最低误差。}\label{tab:redistribution}
+\begin{tabular}{llrrr}\toprule
+变体 & $\rho$ & MAE & RMSE & Prefix50\\\midrule
+加权中心化 & 0.10 & $28.849\pm0.189$ & $56.063\pm0.328$ & $145.34$\\
+加权中心化 & 0.25 & $28.677\pm0.184$ & $55.503\pm0.353$ & $\mathbf{143.64}$\\
+加权中心化（固定$\rho$控制） & 0.45 & $28.633\pm0.239$ & $\mathbf{54.930\pm0.401}$ & $145.26$\\
+无加权中心化 & 0.45 & $\mathbf{28.632\pm0.218}$ & $55.030\pm0.227$ & $143.94$\\
+\bottomrule\end{tabular}
+\end{table*}
